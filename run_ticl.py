@@ -8,7 +8,7 @@ import openai
 
 from src.apis import gpt4v
 from src.utils import create_dir, write_json, load_json, encode_image
-from src.load_dataset import load_hallusionbench_ticl, load_mathvista_ticl
+from src.load_dataset import load_hallusionbench_ticl, load_mathvista_ticl, load_vqa_ticl
 
 random.seed(2023)
 np.random.seed(2023)
@@ -27,7 +27,7 @@ def get_args():
                         choices=["ticl"])
     parser.add_argument("--test_sample", type=int, default=None)
 
-    parser.add_argument("--dataset", type=str, default="hallusionbench", choices=['hallusionbench','mathvista'])
+    parser.add_argument("--dataset", type=str, default="vqa", choices=['hallusionbench','mathvista','vqa'])
     # parser.add_argument("--category", type=str, default='math-targeted-vqa',
     #                     choices=['general-vqa', 'math-targeted-vqa'])
     # parser.add_argument("--sub_category", type=str, default='table')
@@ -56,6 +56,8 @@ def main():
         }
     elif args.dataset == 'hallusionbench':
         category = {'all': [None]}
+    elif args.dataset == 'vqa':
+        category = {'counting100': [None], 'yesorno50': [None], 'random100': [None]}
     else:
         raise NotImplementedError(f"not support dataset: {args.dataset}")
     for cate, sub_cates in category.items():
@@ -73,6 +75,8 @@ def main():
                 datas = eval(f"load_{args.dataset}_ticl")(args.lt, args.category, args.sub_category)
             elif args.dataset == 'hallusionbench':
                 datas = eval(f"load_{args.dataset}_ticl")(args.lt)
+            elif args.dataset == 'vqa':
+                datas = eval(f"load_{args.dataset}_ticl")(args.lt, args.category)
             else:
                 raise NotImplementedError(f"not support dataset: {args.dataset}")
 
