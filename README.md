@@ -15,7 +15,7 @@ Unzip the file after downloading and keep the ```dataset``` directory in the roo
     |----src
     ...
 ```
-# Run Code
+# Run In-Image Learning and Baselines
 ## In-Image Learning
 ```shell
 python run_iil.py --exp_name exp_on_mv --dataset mathvista --lt few_shot
