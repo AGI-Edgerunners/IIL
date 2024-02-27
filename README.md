@@ -33,6 +33,6 @@ python run_ticl.py --exp_name exp_on_mv --dataset mathvista --lt few_shot
 
 # Cite
 If you find **In-Image Learning** useful for your research and applications, please kindly cite using this BibTeX:
-```text
+```latex
 
 ```
