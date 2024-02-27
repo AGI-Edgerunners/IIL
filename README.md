@@ -1,4 +1,4 @@
-# <img src="logo_i2l.jpg" width="25" height="25"> In-Image Learning 
+# <img src="logo_i2l.jpg" width="25" height="40"> In-Image Learning 
 ![IIL case](Figure1.jpg)
 
 Code for our Paper "[All in a Single Image: Large Multimodal Models are In-Image Learners]([https://arxiv.org/abs/2305.04091](https://github.com/AGI-Edgerunners/IIL/edit/main/README.md))".
