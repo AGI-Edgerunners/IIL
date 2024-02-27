@@ -2,13 +2,10 @@ import base64
 import json
 import math
 import os
-import shutil
 
-import requests
 from matplotlib import image as mpimg
 from matplotlib import pyplot as plt
-# from PIL.Image import Image
-from PIL import Image, ImageDraw, ImageFont, ImageEnhance
+from PIL import Image, ImageDraw, ImageFont
 import requests
 import jieba
 
@@ -45,15 +42,15 @@ def text_image_concat(text: str, image_file: str, saving_file: str, demo_file=No
                       text_pos: str = "b",
                       image_pos: str = "c", bold=False, text_size=20):
     """
-    :param text: 拼接的文本
-    :param image_file: 拼接的图片（路径）
-    :param saving_file: 拼接后保存的图片路径
-    :param height: 设置拼接后的图片高度（可选）
-    :param width: 设置拼接后的图片宽度（可选）
-    :param text_pos: 文本的位置（t表示放在图片上方，b表示放在图片下方）
-    :param image_pos: 图片的位置（c表示图片居中，目前只支持居中）
-    :param bold: 文本是否加粗（True or False）
-    :param text_size: 文本字体大小（默认16）
+    :param text: concatenating text
+    :param image_file: concatenating image (path)
+    :param saving_file: path to save concatenated image
+    :param height: set the height concatenated image (optional)
+    :param width: set the width concatenated image (optional)
+    :param text_pos: position of the text (t for top on the image，b for bottom of the image)
+    :param image_pos: position of image (c for aligning center and l for aligning left)
+    :param bold: bold text or not (True or False)
+    :param text_size: font size of text (default 20)
     :return:
     """
     image = Image.open(image_file)
@@ -78,16 +75,14 @@ def text_image_concat(text: str, image_file: str, saving_file: str, demo_file=No
     lines = []
     line_words = ''
 
-    # 使用默认分词模式，同时支持中英文
     seg_list = jieba.cut(text, cut_all=False)
     for word in seg_list:
-    #for word in text.split(" "):
         try_line = line_words + ' ' + word if line_words else word
-        # 大写字母数量
+        # 大写字母数量 count of uppercase
         u_c = sum(1 for char in try_line if char.isupper())
-        # 中文字数量
+        # 中文字数量 count of chinese characters
         c_c = sum(1 for char in try_line if '\u4e00' <= char <= '\u9fff')
-        # 小写字母数量
+        # 小写字母数量 count of lowercase
         l_c = len(try_line) - u_c - c_c
         if '\n' in word:
             temp_lines = word.split('\n')
@@ -145,27 +140,14 @@ def text_image_concat(text: str, image_file: str, saving_file: str, demo_file=No
             lines_loc.append([20, line_idx * line_height])
         else:
             raise NotImplementedError()
-    # if text_pos == "t":
-    #     image_loc[1] = text_pix
-    #     text_loc[1] = 0
-    # elif text_pos == "b":
-    #     image_loc[1] = 0
-    #     text_loc[1] = image.height
-    # else:
-    #     raise NotImplementedError()
+
     to_image.paste(image, (image_loc[0], image_loc[1]))
     to_image.save(saving_file)
     font = ImageFont.truetype(font_file, size=text_size)
     draw = ImageDraw.Draw(to_image)
     for loc, line in zip(lines_loc, lines):
         draw.text((loc[0], loc[1]), line, fill=(0, 0, 0), font=font)
-    # enhancer = ImageEnhance.Contrast(to_image)
-    #
-    # # 调整对比度
-    # enhanced_image = enhancer.enhance(factor=1.5)
-    #
-    # # 保存增强后的图像
-    # enhanced_image.save(saving_file)
+
     to_image.save(saving_file)
     return
 
@@ -186,10 +168,10 @@ def calculate_text_width(text, font_size, font_path=None):
 def images_concat(image_file1: str, image_file2: str, saving_file: str, pos="l"):
     """
     图片上下拼接
-    :param image_file1: 图片1路径
-    :param image_file2: 图片2路径
-    :param saving_file: 拼接后图片保存路径
-    :param pos: 图片位置（图片对齐，c表示居中对齐，l表示左边对齐）
+    :param image_file1: path of first image
+    :param image_file2: path of second image
+    :param saving_file: path to save concatenated image
+    :param pos: images position (c for aligning center and l for aligning left)
     :return:
     """
     rom_image_1 = Image.open(image_file1)
@@ -241,17 +223,6 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-
-def image_upload(image_path):
-    upload_api_key = '2a5b9172fc0f654e60cefa49bc8bead0'
-    url = "https://api.imgbb.com/1/upload"
-    with open(image_path, 'rb') as f:
-        files = {'image': (image_path, f)}
-        params = {'key': upload_api_key}
-        response = requests.post(url, files=files, params=params)
-
-    image_link = response.json()['data']['url']
-    return image_link
 
 
 def get_image_size(image_file: str):
@@ -328,26 +299,10 @@ def images_crop_concat(image_file1: str, image_file2: str, saving_file: str, pos
     return
 
 
-# def Upload(file_name, file_path, upload_url):
-#     upload_url = upload_url
-#     client = gdata.docs.client.DocsClient(source=upload_url)
-#     client.api_version = "3"
-#     client.ssl = True
-#     client.ClientLogin(username, passwd, client.source)
-#     filePath = file_path
-#     newResource = gdata.docs.data.Resource(filePath,file_name)
-#     media = gdata.data.MediaSource()
-#     media.SetFileHandle(filePath, 'mime/type')
-#     newDocument = client.CreateResource(
-#         newResource,
-#         create_uri=gdata.docs.client.RESOURCE_UPLOAD_URI,
-#         media=media
-#     )
-
 def image_upload(image_file):
-    # api_key = '4cd1900d1667a2e3d12169fb32e498c8'
-    api_key = '9681adb334a948d1b4fabddfa56fddeb'
-    url = "https://api.imgbb.com/1/upload"
+    api_key = ''
+    url = ''
+    # url = "https://api.imgbb.com/1/upload"
     with open(image_file, 'rb') as f:
         files = {'image': (image_file, f)}
         params = {'key': api_key}

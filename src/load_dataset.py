@@ -34,12 +34,61 @@ def load_hallusionbench():
     return datas
 
 
-def load_hallusionbench_ticl():
+def load_hallusionbench_ticl(learning_type: str):
     """
     text only
     :return:
     """
-    pass
+    dataset_root = "dataset/Hallusionbench/hallusion_bench"
+    data_file = f"{dataset_root}/HallusionBench.tsv"
+    df_datas = pd.read_csv(data_file, sep='\t').to_dict("records")
+    datas = []
+    question_prompt = """Answer the question according to the description.
+    Description: {description}
+    {question}
+    Answer: """
+    caption_prompt = "Generate detailed caption for the image.\nCaption: "
+    for raw_idx in range(len(df_datas)):
+        data = df_datas[raw_idx]
+        if data.get("visual_input"):
+            test_file = f"{dataset_root}/{data.get('category')}/{data.get('subcategory')}/{data.get('set_id')}_{data.get('figure_id')}.png"
+            test_text = data.get('question')
+        else:
+            test_file = None
+            continue
+        image_inputs = []
+        text_inputs = [question_prompt]
+        image_inputs_for_caption = [test_file]
+        text_inputs_for_caption = [caption_prompt]
+        if learning_type == "few_shot":
+            demo_caption_prompt = "Generate detailed caption for the image.\nCaption: {caption}"
+            fs_question_prompt_dir = "dataset/Hallusionbench/ticl_prompt"
+            with open(f"{fs_question_prompt_dir}/{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}.txt", 'r',
+                      encoding='utf-8') as f:
+                fs_question_prompt = f.read()
+                f.close()
+            text_inputs = [fs_question_prompt]
+            demo_file_dir = "dataset/Hallusionbench/demo_file"
+            demo_caption_dir = "dataset/Hallusionbench/demo_caption"
+            demo_file = f"{demo_file_dir}/{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}.png"
+            with open(f"{demo_caption_dir}/{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}.txt", 'r',
+                      encoding='utf-8') as f:
+                demo_caption = f.read()
+            demo_caption = demo_caption_prompt.format(caption=demo_caption)
+            image_inputs_for_caption = [demo_file, test_file]
+            text_inputs_for_caption = [demo_caption, caption_prompt]
+
+        answer = data.get('gt_answer')
+        answer_detail = data.get('gt_answer_details')
+        id_ = f"{data.get('category')}-{data.get('subcategory')}-{data.get('set_id')}-{data.get('figure_id')}-{data.get('question_id')}"
+        if test_file is not None:
+            datas.append(
+                {"id": id_, "text": test_text, "image_file": test_file, "label": answer, "label_detail": answer_detail,
+                 "image_inputs": image_inputs, "text_inputs": text_inputs, "image_inputs_for_caption": image_inputs_for_caption,
+                    "text_inputs_for_caption": text_inputs_for_caption}
+            )
+    return datas
+
 
 
 def load_hallusionbench_vticl(learning_type: str):
@@ -48,7 +97,7 @@ def load_hallusionbench_vticl(learning_type: str):
     :param learning_type:
     :return:
     """
-    dataset_root = "dataset/hallusion_bench"
+    dataset_root = "dataset/Hallusionbench/hallusion_bench"
     data_file = f"{dataset_root}/HallusionBench.tsv"
     df_datas = pd.read_csv(data_file, sep='\t').to_dict("records")
     datas = []
@@ -63,11 +112,28 @@ def load_hallusionbench_vticl(learning_type: str):
         image_inputs = [test_file]
         text_inputs = [test_text]
         if learning_type == "few_shot":
-            # todo: 指定demo图片路径和文本
-            demo_file = ""
-            demo_text = ""
-            image_inputs = [demo_file, test_file]
-            text_inputs = [demo_text, test_text]
+            demo_root = "dataset/Hallusionbench/vticl_demo_file"
+            demo1_file = f"{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}_demo0.png"
+            text1_file = f"{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}_demo0_text.txt"
+            with open(f"{demo_root}/text/{text1_file}", mode="r", encoding="utf-8") as f:
+                demo1_prompt = f.read()
+            image_inputs = [f"{demo_root}/{demo1_file}"]
+            text_inputs = [demo1_prompt]
+
+            demo2_file = f"{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}_demo1.png"
+            demo3_file = f"{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}_demo2.png"
+            demo4_file = f"{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}_demo3.png"
+            text2_file = f"{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}_demo1_text.txt"
+            text3_file = f"{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}_demo2_text.txt"
+            text4_file = f"{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}_demo3_text.txt"
+            for demo_file, text_file in zip([demo2_file, demo3_file, demo4_file], [text2_file, text3_file, text4_file]):
+                if os.path.exists(f"{demo_root}/{demo_file}"):
+                    with open(f"{demo_root}/text/{text_file}", mode="r", encoding="utf-8") as f:
+                        demo_prompt = f.read()
+                    image_inputs.append(f"{demo_root}/{demo_file}")
+                    text_inputs.append(demo_prompt)
+            image_inputs.append(test_file)
+            text_inputs.append(test_text)
         answer = data.get('gt_answer')
         answer_detail = data.get('gt_answer_details')
         id_ = f"{data.get('category')}-{data.get('subcategory')}-{data.get('set_id')}-{data.get('figure_id')}-{data.get('question_id')}"
@@ -86,8 +152,8 @@ def load_hallusionbench_iil(learning_type: str):
     :param learning_type: zero_shot/few_shot
     :return:
     """
-    ori_dataset_root = "dataset/hallusion_bench"
-    dataset_root = "dataset/hallusion_bench_iil"
+    ori_dataset_root = "dataset/Hallusionbench/hallusion_bench"
+    dataset_root = "dataset/Hallusionbench/hallusion_bench_iil"
     create_dir(dataset_root)
     ori_data_file = f"{ori_dataset_root}/HallusionBench.tsv"
     df_datas = pd.read_csv(ori_data_file, sep='\t').to_dict("records")
@@ -106,9 +172,9 @@ def load_hallusionbench_iil(learning_type: str):
         text_image_concat(text, ori_image_file, zs_image_file)
         image_file = zs_image_file
         if learning_type == 'few_shot':
-            # todo: 初始化demo图片路径和拼接后的图片路径
-            demo_file = ""
-            fs_image_file = ""
+            demo_dir = "dataset/Hallusionbench/demo_file"
+            demo_file = f"{demo_dir}/{data.get('category')}_{data.get('subcategory')}_{data.get('set_id')}.png"
+            fs_image_file = f"{dataset_root}/{data.get('category')}/{data.get('subcategory')}/fs_{data.get('set_id')}_{data.get('figure_id')}.png"
             images_concat(demo_file, zs_image_file, fs_image_file)
             image_file = fs_image_file
         text = data.get('question')
@@ -235,7 +301,7 @@ def load_mathvista_ticl(learning_type: str, category: str, sub_category: str):
 Description: {description}
 {question}
 Answer: """
-    caption_prompt = "Generate detailed caption for the image."
+    caption_prompt = "Generate detailed caption for the image.\nCaption: "
     for raw_idx in range(len(ori_datas)):
         data = ori_datas[raw_idx]
         if data.get('category') == category and data.get('context') == sub_category:
@@ -251,15 +317,14 @@ Answer: """
         image_inputs_for_caption = [test_file]
         text_inputs_for_caption = [caption_prompt]
         if learning_type == "few_shot":
-            demo_caption_prompt = "Generate detailed caption for the image.\n{caption}"
-            # todo: 指定demo图片路径
+            demo_caption_prompt = "Generate detailed caption for the image.\nCaption: {caption}"
             fs_question_prompt_dir = "dataset/mathvista_testmini/ticl_prompt"
             with open(f"{fs_question_prompt_dir}/{data.get('category')}_{data.get('context')}.txt", 'r',
                       encoding='utf-8') as f:
                 fs_question_prompt = f.read()
                 f.close()
             text_inputs = [fs_question_prompt]
-            demo_file_dir = "dataset/mathvista_testmini/image"
+            demo_file_dir = "dataset/mathvista_testmini/demo_image"
             demo_caption_dir = "dataset/mathvista_testmini/demo_caption"
             demo_file = f"{demo_file_dir}/{data.get('category')}_{data.get('context')}.png"
             with open(f"{demo_caption_dir}/{data.get('category')}_{data.get('context')}.txt", 'r',

@@ -2,16 +2,12 @@ import argparse
 import copy
 import os.path
 import random
-import time
 
 import numpy as np
 import openai
-from PIL import Image, ImageDraw, ImageFont
-# from API.gpt4v_api import gpt4v
 
 from src.apis import gpt4v
-from src.utils import create_dir, write_json, load_json, encode_image, image_upload, text_image_concat, images_concat, \
-    get_image_size, image_resize
+from src.utils import create_dir, write_json, load_json, encode_image
 from src.load_dataset import load_hallusionbench_ticl, load_mathvista_ticl
 
 random.seed(2023)
@@ -22,9 +18,6 @@ base_url = None
 # Adjust accordingly based on your current proxy settings.
 proxy = 'http://127.0.0.1:4780'
 
-api_key = "sk-CDKvlv4ry6jDzq2Q624a143d569446C59e66B2CfA0E39fD9"
-base_url = "https://api.xi-ai.cn/v1"
-openai.base_url
 
 
 def get_args():
@@ -34,7 +27,7 @@ def get_args():
                         choices=["ticl"])
     parser.add_argument("--test_sample", type=int, default=None)
 
-    parser.add_argument("--dataset", type=str, default="mathvista")
+    parser.add_argument("--dataset", type=str, default="hallusionbench", choices=['hallusionbench','mathvista'])
     # parser.add_argument("--category", type=str, default='math-targeted-vqa',
     #                     choices=['general-vqa', 'math-targeted-vqa'])
     # parser.add_argument("--sub_category", type=str, default='table')
@@ -77,9 +70,9 @@ def main():
 
             # 数据集
             if args.dataset == "mathvista":
-                datas = eval(f"load_{args.dataset}_iil")(args.lt, args.category, args.sub_category)
+                datas = eval(f"load_{args.dataset}_ticl")(args.lt, args.category, args.sub_category)
             elif args.dataset == 'hallusionbench':
-                datas = eval(f"load_{args.dataset}_iil")(args.lt)
+                datas = eval(f"load_{args.dataset}_ticl")(args.lt)
             else:
                 raise NotImplementedError(f"not support dataset: {args.dataset}")
 
@@ -118,7 +111,8 @@ def main():
                 # step 2: reasoning generation
                 image_inputs = []
                 text_inputs = data.get("text_inputs", [])
-                query = data.get("query","")
+                text = data.get("text", "")
+                test_file = data.get("image_file")
                 messages = [
                     {
                         "role": "user",
@@ -126,7 +120,7 @@ def main():
                     },
                 ]
                 for question_prompt in text_inputs:
-                    messages[0]['content'].append({"type": "text", "text": question_prompt.format(description=caption, question=query)})
+                    messages[0]['content'].append({"type": "text", "text": question_prompt.format(description=caption, question=text)})
 
                 n = 3
                 error_flag = False
@@ -142,8 +136,6 @@ def main():
                         error_flag = True
                     else:
                         n -= 1
-                text = data.get("text", "")
-                test_file = data.get("image_file")
                 print("\n")
                 print(f"ID: {id_}")
                 print(f"user: {test_file} {text}")

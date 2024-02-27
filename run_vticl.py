@@ -2,14 +2,11 @@ import argparse
 import copy
 import os.path
 import random
-import time
 
 import numpy as np
 import openai
-from PIL import Image, ImageDraw, ImageFont
-from API.gpt4v_api import gpt4v
-from src.utils import create_dir, write_json, load_json, encode_image, image_upload, text_image_concat, images_concat, \
-    get_image_size, image_resize
+from src.apis import gpt4v
+from src.utils import create_dir, write_json, load_json, encode_image
 from src.load_dataset import load_hallusionbench_vticl, load_mathvista_vticl
 
 random.seed(2023)
@@ -20,9 +17,6 @@ base_url = None
 # Adjust accordingly based on your current proxy settings.
 proxy = 'http://127.0.0.1:4780'
 
-api_key = "sk-CDKvlv4ry6jDzq2Q624a143d569446C59e66B2CfA0E39fD9"
-base_url = "https://api.xi-ai.cn/v1"
-
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -31,13 +25,13 @@ def get_args():
                         choices=["vticl"])
     parser.add_argument("--test_sample", type=int, default=None)
 
-    parser.add_argument("--dataset", type=str, default="mathvista")
+    parser.add_argument("--dataset", type=str, default="hallusionbench", choices=['hallusionbench','mathvista'])
     # parser.add_argument("--category", type=str, default='math-targeted-vqa',
     #                     choices=['general-vqa', 'math-targeted-vqa'])
     # parser.add_argument("--sub_category", type=str, default='table')
     parser.add_argument("--exp_name", type=str, default="public_code_test02",
                         help="automatically resume experiment by matching the same experiment name")
-    parser.add_argument("--lt", type=str, default="zero_shot", choices=["zero_shot", "few_shot"],
+    parser.add_argument("--lt", type=str, default="few_shot", choices=["zero_shot", "few_shot"],
                         help="zero_shot or few_shot")
 
     #
@@ -113,7 +107,6 @@ def main():
                 output = ""
                 while n > 0 and not error_flag:
                     output = gpt4v(
-                        model="gpt-4-vision-preview",
                         messages=messages,
                         temperature=0,
                         api_key=api_key,
