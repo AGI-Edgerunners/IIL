@@ -557,766 +557,766 @@ def load_vqa_vticl(learning_type: str, category: str):
         )
     return datas
 
-def load_counting100_demo1():
-    ori_dataset_root = "dataset/counting_100"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/counting_100_imageonly"
-    create_dir(dataset_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo1_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                         '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_counting_demo1.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        # if not os.path.exists(image_file):
-        #     images_concat(demo_file, image_only_file, image_file)
-        images_concat(demo_file, image_only_file, image_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_counting100_demo3():
-    ori_dataset_root = "dataset/counting_100"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/counting_100_imageonly"
-    create_dir(dataset_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo3_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                         '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_counting_demo3.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        # if not os.path.exists(image_file):
-        #     images_concat(demo_file, image_only_file, image_file)
-        images_concat(demo_file, image_only_file, image_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_counting100_demo4():
-    ori_dataset_root = "dataset/counting_100"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/counting_100_imageonly"
-    create_dir(dataset_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo4_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                         '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_counting_demo4.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        # if not os.path.exists(image_file):
-        #     images_concat(demo_file, image_only_file, image_file)
-        images_concat(demo_file, image_only_file, image_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo():
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    create_dir(dataset_root)
-    datas = []
-    demo_text = """Learn from demonstration examples and answer the question of the test example.
-# Demonstration Example 1
-Question: Is the dog hot?
-Answer: Let's think step by step. In the image, the dog appears to be panting, which is a common sign that it may be hot or has been active. Panting is a normal response in dogs to help regulate their body temperature since they cannot sweat through their skin like humans do. It's also worth noting that dogs will pant when they are excited or after exercise. Therefore, the answer is yes.
-
-# Demonstration Example 2
-Question: Is there a chain on the hydrant?
-Answer: Let's think  step by step. In the provided image, there is no visible chain on the hydrant. A chain is sometimes attached to fire hydrants to secure the caps or to link to a hydrant wrench, but in this picture, such a chain is not present. The hydrant appears to have a typical design with a red top and white base, and it is standing alone without any attachments. Therefore, the answer is no.
-
-# Test Example
-Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-
-        images_concat(demo_file, image_only_file, image_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo1():
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    create_dir(dataset_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo1_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                         '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_yesorno_demo1.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-
-        images_concat(demo_file, image_only_file, image_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo3():
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    create_dir(dataset_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo3_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                         '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_yesorno_demo3.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-
-        images_concat(demo_file, image_only_file, image_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo4():
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    create_dir(dataset_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo4_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                         '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_yesorno_demo4.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-
-        images_concat(demo_file, image_only_file, image_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo_l2r():
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    create_dir(dataset_root)
-    datas = []
-    demo_text = """Question: {}"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_l2r_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                            '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_yesorno_demo_l2r.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file)
-        image_paste_anywhere(demo_file, image_only_file, image_file, x=1400, y=60)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo_t2brot():
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    create_dir(dataset_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_t2brot_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                               '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_yesorno_demo_t2brot.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file)
-        image_rotating_concat(demo_file, image_only_file, image_file, pos='c')
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-
-def load_yesorno50_demo_resize1():
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    resize_save_root = "dataset/yesorno_50_imageonly_resize"
-    create_dir(dataset_root)
-    create_dir(resize_save_root)
-    datas = []
-    demo_text = """Learn from demonstration examples and answer the question of the test example.
-# Demonstration Example 1
-Question: Is the dog hot?
-Answer: Let's think step by step. In the image, the dog appears to be panting, which is a common sign that it may be hot or has been active. Panting is a normal response in dogs to help regulate their body temperature since they cannot sweat through their skin like humans do. It's also worth noting that dogs will pant when they are excited or after exercise. Therefore, the answer is yes.
-
-# Demonstration Example 2
-Question: Is there a chain on the hydrant?
-Answer: Let's think  step by step. In the provided image, there is no visible chain on the hydrant. A chain is sometimes attached to fire hydrants to secure the caps or to link to a hydrant wrench, but in this picture, such a chain is not present. The hydrant appears to have a typical design with a red top and white base, and it is standing alone without any attachments. Therefore, the answer is no.
-
-# Test Example
-Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        if not os.path.exists(image_file):
-            images_concat(demo_file, image_only_file, image_file)
-        resize_file = f"{resize_save_root}/resize1_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                                     '0') + ".jpg"
-        image_resize(image_file, 0.25, resize_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo_resize2():
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    resize_save_root = "dataset/yesorno_50_imageonly_resize"
-    create_dir(dataset_root)
-    create_dir(resize_save_root)
-    datas = []
-    demo_text = """Learn from demonstration examples and answer the question of the test example.
-# Demonstration Example 1
-Question: Is the dog hot?
-Answer: Let's think step by step. In the image, the dog appears to be panting, which is a common sign that it may be hot or has been active. Panting is a normal response in dogs to help regulate their body temperature since they cannot sweat through their skin like humans do. It's also worth noting that dogs will pant when they are excited or after exercise. Therefore, the answer is yes.
-
-# Demonstration Example 2
-Question: Is there a chain on the hydrant?
-Answer: Let's think  step by step. In the provided image, there is no visible chain on the hydrant. A chain is sometimes attached to fire hydrants to secure the caps or to link to a hydrant wrench, but in this picture, such a chain is not present. The hydrant appears to have a typical design with a red top and white base, and it is standing alone without any attachments. Therefore, the answer is no.
-
-# Test Example
-Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        if not os.path.exists(image_file):
-            images_concat(demo_file, image_only_file, image_file)
-        resize_file = f"{resize_save_root}/resize2_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                                     '0') + ".jpg"
-        image_resize(image_file, 0.5, resize_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo_resize4():
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    resize_save_root = "dataset/yesorno_50_imageonly_resize"
-    create_dir(dataset_root)
-    create_dir(resize_save_root)
-    datas = []
-    demo_text = """Learn from demonstration examples and answer the question of the test example.
-# Demonstration Example 1
-Question: Is the dog hot?
-Answer: Let's think step by step. In the image, the dog appears to be panting, which is a common sign that it may be hot or has been active. Panting is a normal response in dogs to help regulate their body temperature since they cannot sweat through their skin like humans do. It's also worth noting that dogs will pant when they are excited or after exercise. Therefore, the answer is yes.
-
-# Demonstration Example 2
-Question: Is there a chain on the hydrant?
-Answer: Let's think  step by step. In the provided image, there is no visible chain on the hydrant. A chain is sometimes attached to fire hydrants to secure the caps or to link to a hydrant wrench, but in this picture, such a chain is not present. The hydrant appears to have a typical design with a red top and white base, and it is standing alone without any attachments. Therefore, the answer is no.
-
-# Test Example
-Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        if not os.path.exists(image_file):
-            images_concat(demo_file, image_only_file, image_file)
-        resize_file = f"{resize_save_root}/resize4_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                                     '0') + ".jpg"
-        image_resize(image_file, 2, resize_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_counting_demo_resize1():
-    ori_dataset_root = "dataset/counting_100"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/counting_100_imageonly"
-    resize_save_root = "dataset/counting_100_imageonly_resize"
-    create_dir(dataset_root)
-    create_dir(resize_save_root)
-    datas = []
-    demo_text = """Learn from demonstration examples and answer the question of the test example.
-# Demonstration Example 1
-Question: How many different teams in this shot?
-Answer: Let's think step by step. Based on the uniforms depicted in the image, there are two different teams shown. One player is wearing a striped green and white jersey, while the other is in a solid red jersey. Each player's uniform is distinctively colored to represent their respective team, a common practice in team sports to differentiate competitors. Therefore, the answer is two different teams are represented in this shot.
-
-# Demonstration Example 2
-Question: How many levels do the buses have?
-Answer: Let's think  step by step. The image shows 3 buses, each with 2 levels, commonly known as double-decker buses. The total number of levels across all buses is 3 × 2 = 6.  Therefore, the answer is 6.
-
-# Test Example
-Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_counting_demo_v4.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        if not os.path.exists(image_file):
-            images_concat(demo_file, image_only_file, image_file)
-        resize_file = f"{resize_save_root}/resize1_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                                     '0') + ".jpg"
-        image_resize(image_file, 0.25, resize_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_counting_demo_resize2():
-    ori_dataset_root = "dataset/counting_100"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/counting_100_imageonly"
-    resize_save_root = "dataset/counting_100_imageonly_resize"
-    create_dir(dataset_root)
-    create_dir(resize_save_root)
-    datas = []
-    demo_text = """Learn from demonstration examples and answer the question of the test example.
-# Demonstration Example 1
-Question: How many different teams in this shot?
-Answer: Let's think step by step. Based on the uniforms depicted in the image, there are two different teams shown. One player is wearing a striped green and white jersey, while the other is in a solid red jersey. Each player's uniform is distinctively colored to represent their respective team, a common practice in team sports to differentiate competitors. Therefore, the answer is two different teams are represented in this shot.
-
-# Demonstration Example 2
-Question: How many levels do the buses have?
-Answer: Let's think  step by step. The image shows 3 buses, each with 2 levels, commonly known as double-decker buses. The total number of levels across all buses is 3 × 2 = 6.  Therefore, the answer is 6.
-
-# Test Example
-Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_counting_demo_v4.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        if not os.path.exists(image_file):
-            images_concat(demo_file, image_only_file, image_file)
-        resize_file = f"{resize_save_root}/resize2_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                                     '0') + ".jpg"
-        image_resize(image_file, 0.5, resize_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_counting_demo_resize4():
-    ori_dataset_root = "dataset/counting_100"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/counting_100_imageonly"
-    resize_save_root = "dataset/counting_100_imageonly_resize"
-    create_dir(dataset_root)
-    create_dir(resize_save_root)
-    datas = []
-    demo_text = """Learn from demonstration examples and answer the question of the test example.
-# Demonstration Example 1
-Question: How many different teams in this shot?
-Answer: Let's think step by step. Based on the uniforms depicted in the image, there are two different teams shown. One player is wearing a striped green and white jersey, while the other is in a solid red jersey. Each player's uniform is distinctively colored to represent their respective team, a common practice in team sports to differentiate competitors. Therefore, the answer is two different teams are represented in this shot.
-
-# Demonstration Example 2
-Question: How many levels do the buses have?
-Answer: Let's think  step by step. The image shows 3 buses, each with 2 levels, commonly known as double-decker buses. The total number of levels across all buses is 3 × 2 = 6.  Therefore, the answer is 6.
-
-# Test Example
-Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_counting_demo_v4.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        if not os.path.exists(image_file):
-            images_concat(demo_file, image_only_file, image_file)
-        resize_file = f"{resize_save_root}/resize4_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                                     '0') + ".jpg"
-        image_resize(image_file, 2, resize_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_counting_demo_resize(scale: Union[int, float]):
-    ori_dataset_root = "dataset/counting_100"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/counting_100_imageonly"
-    resize_save_root = "dataset/counting_100_imageonly_resize"
-    create_dir(dataset_root)
-    create_dir(resize_save_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_counting_demo_v4.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        if not os.path.exists(image_file):
-            images_concat(demo_file, image_only_file, image_file)
-        resize_file = f"{resize_save_root}/scale_{scale}_with_demo_COCO_test2015_000000" + str(
-            data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_resize(image_file, scale, resize_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_counting_demo_nshots(n: int):
-    ori_dataset_root = "dataset/counting_100"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/counting_100_imageonly"
-    n_shots_root = "dataset/counting_100_imageonly_nshots"
-    create_dir(dataset_root)
-    create_dir(n_shots_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_{n}shots_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                                 '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_counting_demo_{n}.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        images_concat(demo_file, image_only_file, image_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_counting_demo_place(place: str):
-    ori_dataset_root = "dataset/counting_100"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/counting_100_imageonly"
-    place_root = "dataset/counting_100_imageonly_place"
-    create_dir(dataset_root)
-    create_dir(place_root)
-    datas = []
-    demo_text = """Question: {}"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{place_root}/with_demo_{place}_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                              '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_counting_demo_{place}.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file)
-        if place == 'l2r':
-            image_paste_anywhere(demo_file, image_only_file, image_file, x=1530, y=80)
-        elif place == 't2brot':
-            image_rotating_concat(demo_file, image_only_file, image_file, pos='c')
-        elif place == 'rand':
-            image_paste_anywhere(demo_file, image_only_file, image_file, x=160, y=150)
-        else:
-            raise NotImplementedError()
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo_resize(scale: Union[int, float]):
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    resize_save_root = "dataset/yesorno_50_imageonly_resize"
-    create_dir(dataset_root)
-    create_dir(resize_save_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-        if not os.path.exists(image_file):
-            images_concat(demo_file, image_only_file, image_file)
-        resize_file = f"{resize_save_root}/scale_{scale}_with_demo_COCO_test2015_000000" + str(
-            data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_resize(image_file, scale, resize_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo_nshots(n: int):
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    n_shots_root = "dataset/yesorno_50_imageonly_nshots"
-    create_dir(dataset_root)
-    create_dir(n_shots_root)
-    datas = []
-    demo_text = """Question: {}
-"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{n_shots_root}/with_demo_{n}shots_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                                 '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_yesorno_demo_{n}.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        demo_h, demo_w = get_image_size(demo_file)
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
-
-        images_concat(demo_file, image_only_file, image_file)
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
-
-
-def load_yesorno50_demo_place(place: str):
-    ori_dataset_root = "dataset/yesorno_50"
-    ori_datas = load_json(f"{ori_dataset_root}/questions.json")
-    dataset_root = "dataset/yesorno_50_imageonly"
-    place_root = "dataset/yesorno_50_imageonly_place"
-    create_dir(dataset_root)
-    create_dir(place_root)
-    datas = []
-    demo_text = """Question: {}"""
-    for data in ori_datas:
-        ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-        image_file = f"{place_root}/with_demo_{place}_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
-                                                                                                              '0') + ".jpg"
-        demo_file = f"{dataset_root}/vqa_yesorno_demo_{place}.jpg"
-        image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
-
-        text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file)
-        if place == 'l2r':
-            image_paste_anywhere(demo_file, image_only_file, image_file, x=1400, y=60)
-        elif place == 't2brot':
-            image_rotating_concat(demo_file, image_only_file, image_file, pos='c')
-        elif place == 'rand':
-            image_paste_anywhere(demo_file, image_only_file, image_file, x=1260, y=520)
-        else:
-            raise NotImplementedError()
-        answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
-        with open(answer_file, mode="r", encoding="utf-8") as f:
-            answer = f.read()
-            f.close()
-        text = demo_text.format(data.get("question"))
-        datas.append(
-            {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
-             "label": answer}
-        )
-    return datas
+# def load_counting100_demo1():
+#     ori_dataset_root = "dataset/counting_100"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/counting_100_imageonly"
+#     create_dir(dataset_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo1_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                          '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_counting_demo1.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         # if not os.path.exists(image_file):
+#         #     images_concat(demo_file, image_only_file, image_file)
+#         images_concat(demo_file, image_only_file, image_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_counting100_demo3():
+#     ori_dataset_root = "dataset/counting_100"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/counting_100_imageonly"
+#     create_dir(dataset_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo3_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                          '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_counting_demo3.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         # if not os.path.exists(image_file):
+#         #     images_concat(demo_file, image_only_file, image_file)
+#         images_concat(demo_file, image_only_file, image_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_counting100_demo4():
+#     ori_dataset_root = "dataset/counting_100"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/counting_100_imageonly"
+#     create_dir(dataset_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo4_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                          '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_counting_demo4.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         # if not os.path.exists(image_file):
+#         #     images_concat(demo_file, image_only_file, image_file)
+#         images_concat(demo_file, image_only_file, image_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo():
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     create_dir(dataset_root)
+#     datas = []
+#     demo_text = """Learn from demonstration examples and answer the question of the test example.
+# # Demonstration Example 1
+# Question: Is the dog hot?
+# Answer: Let's think step by step. In the image, the dog appears to be panting, which is a common sign that it may be hot or has been active. Panting is a normal response in dogs to help regulate their body temperature since they cannot sweat through their skin like humans do. It's also worth noting that dogs will pant when they are excited or after exercise. Therefore, the answer is yes.
+#
+# # Demonstration Example 2
+# Question: Is there a chain on the hydrant?
+# Answer: Let's think  step by step. In the provided image, there is no visible chain on the hydrant. A chain is sometimes attached to fire hydrants to secure the caps or to link to a hydrant wrench, but in this picture, such a chain is not present. The hydrant appears to have a typical design with a red top and white base, and it is standing alone without any attachments. Therefore, the answer is no.
+#
+# # Test Example
+# Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#
+#         images_concat(demo_file, image_only_file, image_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo1():
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     create_dir(dataset_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo1_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                          '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_yesorno_demo1.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#
+#         images_concat(demo_file, image_only_file, image_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo3():
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     create_dir(dataset_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo3_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                          '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_yesorno_demo3.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#
+#         images_concat(demo_file, image_only_file, image_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo4():
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     create_dir(dataset_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo4_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                          '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_yesorno_demo4.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#
+#         images_concat(demo_file, image_only_file, image_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo_l2r():
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     create_dir(dataset_root)
+#     datas = []
+#     demo_text = """Question: {}"""
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_l2r_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                             '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_yesorno_demo_l2r.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file)
+#         image_paste_anywhere(demo_file, image_only_file, image_file, x=1400, y=60)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo_t2brot():
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     create_dir(dataset_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_t2brot_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                                '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_yesorno_demo_t2brot.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file)
+#         image_rotating_concat(demo_file, image_only_file, image_file, pos='c')
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+#
+# def load_yesorno50_demo_resize1():
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     resize_save_root = "dataset/yesorno_50_imageonly_resize"
+#     create_dir(dataset_root)
+#     create_dir(resize_save_root)
+#     datas = []
+#     demo_text = """Learn from demonstration examples and answer the question of the test example.
+# # Demonstration Example 1
+# Question: Is the dog hot?
+# Answer: Let's think step by step. In the image, the dog appears to be panting, which is a common sign that it may be hot or has been active. Panting is a normal response in dogs to help regulate their body temperature since they cannot sweat through their skin like humans do. It's also worth noting that dogs will pant when they are excited or after exercise. Therefore, the answer is yes.
+#
+# # Demonstration Example 2
+# Question: Is there a chain on the hydrant?
+# Answer: Let's think  step by step. In the provided image, there is no visible chain on the hydrant. A chain is sometimes attached to fire hydrants to secure the caps or to link to a hydrant wrench, but in this picture, such a chain is not present. The hydrant appears to have a typical design with a red top and white base, and it is standing alone without any attachments. Therefore, the answer is no.
+#
+# # Test Example
+# Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         if not os.path.exists(image_file):
+#             images_concat(demo_file, image_only_file, image_file)
+#         resize_file = f"{resize_save_root}/resize1_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                                      '0') + ".jpg"
+#         image_resize(image_file, 0.25, resize_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo_resize2():
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     resize_save_root = "dataset/yesorno_50_imageonly_resize"
+#     create_dir(dataset_root)
+#     create_dir(resize_save_root)
+#     datas = []
+#     demo_text = """Learn from demonstration examples and answer the question of the test example.
+# # Demonstration Example 1
+# Question: Is the dog hot?
+# Answer: Let's think step by step. In the image, the dog appears to be panting, which is a common sign that it may be hot or has been active. Panting is a normal response in dogs to help regulate their body temperature since they cannot sweat through their skin like humans do. It's also worth noting that dogs will pant when they are excited or after exercise. Therefore, the answer is yes.
+#
+# # Demonstration Example 2
+# Question: Is there a chain on the hydrant?
+# Answer: Let's think  step by step. In the provided image, there is no visible chain on the hydrant. A chain is sometimes attached to fire hydrants to secure the caps or to link to a hydrant wrench, but in this picture, such a chain is not present. The hydrant appears to have a typical design with a red top and white base, and it is standing alone without any attachments. Therefore, the answer is no.
+#
+# # Test Example
+# Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         if not os.path.exists(image_file):
+#             images_concat(demo_file, image_only_file, image_file)
+#         resize_file = f"{resize_save_root}/resize2_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                                      '0') + ".jpg"
+#         image_resize(image_file, 0.5, resize_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo_resize4():
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     resize_save_root = "dataset/yesorno_50_imageonly_resize"
+#     create_dir(dataset_root)
+#     create_dir(resize_save_root)
+#     datas = []
+#     demo_text = """Learn from demonstration examples and answer the question of the test example.
+# # Demonstration Example 1
+# Question: Is the dog hot?
+# Answer: Let's think step by step. In the image, the dog appears to be panting, which is a common sign that it may be hot or has been active. Panting is a normal response in dogs to help regulate their body temperature since they cannot sweat through their skin like humans do. It's also worth noting that dogs will pant when they are excited or after exercise. Therefore, the answer is yes.
+#
+# # Demonstration Example 2
+# Question: Is there a chain on the hydrant?
+# Answer: Let's think  step by step. In the provided image, there is no visible chain on the hydrant. A chain is sometimes attached to fire hydrants to secure the caps or to link to a hydrant wrench, but in this picture, such a chain is not present. The hydrant appears to have a typical design with a red top and white base, and it is standing alone without any attachments. Therefore, the answer is no.
+#
+# # Test Example
+# Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         if not os.path.exists(image_file):
+#             images_concat(demo_file, image_only_file, image_file)
+#         resize_file = f"{resize_save_root}/resize4_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                                      '0') + ".jpg"
+#         image_resize(image_file, 2, resize_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_counting_demo_resize1():
+#     ori_dataset_root = "dataset/counting_100"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/counting_100_imageonly"
+#     resize_save_root = "dataset/counting_100_imageonly_resize"
+#     create_dir(dataset_root)
+#     create_dir(resize_save_root)
+#     datas = []
+#     demo_text = """Learn from demonstration examples and answer the question of the test example.
+# # Demonstration Example 1
+# Question: How many different teams in this shot?
+# Answer: Let's think step by step. Based on the uniforms depicted in the image, there are two different teams shown. One player is wearing a striped green and white jersey, while the other is in a solid red jersey. Each player's uniform is distinctively colored to represent their respective team, a common practice in team sports to differentiate competitors. Therefore, the answer is two different teams are represented in this shot.
+#
+# # Demonstration Example 2
+# Question: How many levels do the buses have?
+# Answer: Let's think  step by step. The image shows 3 buses, each with 2 levels, commonly known as double-decker buses. The total number of levels across all buses is 3 × 2 = 6.  Therefore, the answer is 6.
+#
+# # Test Example
+# Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_counting_demo_v4.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         if not os.path.exists(image_file):
+#             images_concat(demo_file, image_only_file, image_file)
+#         resize_file = f"{resize_save_root}/resize1_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                                      '0') + ".jpg"
+#         image_resize(image_file, 0.25, resize_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_counting_demo_resize2():
+#     ori_dataset_root = "dataset/counting_100"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/counting_100_imageonly"
+#     resize_save_root = "dataset/counting_100_imageonly_resize"
+#     create_dir(dataset_root)
+#     create_dir(resize_save_root)
+#     datas = []
+#     demo_text = """Learn from demonstration examples and answer the question of the test example.
+# # Demonstration Example 1
+# Question: How many different teams in this shot?
+# Answer: Let's think step by step. Based on the uniforms depicted in the image, there are two different teams shown. One player is wearing a striped green and white jersey, while the other is in a solid red jersey. Each player's uniform is distinctively colored to represent their respective team, a common practice in team sports to differentiate competitors. Therefore, the answer is two different teams are represented in this shot.
+#
+# # Demonstration Example 2
+# Question: How many levels do the buses have?
+# Answer: Let's think  step by step. The image shows 3 buses, each with 2 levels, commonly known as double-decker buses. The total number of levels across all buses is 3 × 2 = 6.  Therefore, the answer is 6.
+#
+# # Test Example
+# Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_counting_demo_v4.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         if not os.path.exists(image_file):
+#             images_concat(demo_file, image_only_file, image_file)
+#         resize_file = f"{resize_save_root}/resize2_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                                      '0') + ".jpg"
+#         image_resize(image_file, 0.5, resize_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_counting_demo_resize4():
+#     ori_dataset_root = "dataset/counting_100"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/counting_100_imageonly"
+#     resize_save_root = "dataset/counting_100_imageonly_resize"
+#     create_dir(dataset_root)
+#     create_dir(resize_save_root)
+#     datas = []
+#     demo_text = """Learn from demonstration examples and answer the question of the test example.
+# # Demonstration Example 1
+# Question: How many different teams in this shot?
+# Answer: Let's think step by step. Based on the uniforms depicted in the image, there are two different teams shown. One player is wearing a striped green and white jersey, while the other is in a solid red jersey. Each player's uniform is distinctively colored to represent their respective team, a common practice in team sports to differentiate competitors. Therefore, the answer is two different teams are represented in this shot.
+#
+# # Demonstration Example 2
+# Question: How many levels do the buses have?
+# Answer: Let's think  step by step. The image shows 3 buses, each with 2 levels, commonly known as double-decker buses. The total number of levels across all buses is 3 × 2 = 6.  Therefore, the answer is 6.
+#
+# # Test Example
+# Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_counting_demo_v4.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         if not os.path.exists(image_file):
+#             images_concat(demo_file, image_only_file, image_file)
+#         resize_file = f"{resize_save_root}/resize4_with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                                      '0') + ".jpg"
+#         image_resize(image_file, 2, resize_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_counting_demo_resize(scale: Union[int, float]):
+#     ori_dataset_root = "dataset/counting_100"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/counting_100_imageonly"
+#     resize_save_root = "dataset/counting_100_imageonly_resize"
+#     create_dir(dataset_root)
+#     create_dir(resize_save_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_counting_demo_v4.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         if not os.path.exists(image_file):
+#             images_concat(demo_file, image_only_file, image_file)
+#         resize_file = f"{resize_save_root}/scale_{scale}_with_demo_COCO_test2015_000000" + str(
+#             data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_resize(image_file, scale, resize_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_counting_demo_nshots(n: int):
+#     ori_dataset_root = "dataset/counting_100"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/counting_100_imageonly"
+#     n_shots_root = "dataset/counting_100_imageonly_nshots"
+#     create_dir(dataset_root)
+#     create_dir(n_shots_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_{n}shots_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                                  '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_counting_demo_{n}.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         images_concat(demo_file, image_only_file, image_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_counting_demo_place(place: str):
+#     ori_dataset_root = "dataset/counting_100"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/counting_100_imageonly"
+#     place_root = "dataset/counting_100_imageonly_place"
+#     create_dir(dataset_root)
+#     create_dir(place_root)
+#     datas = []
+#     demo_text = """Question: {}"""
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{place_root}/with_demo_{place}_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                               '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_counting_demo_{place}.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file)
+#         if place == 'l2r':
+#             image_paste_anywhere(demo_file, image_only_file, image_file, x=1530, y=80)
+#         elif place == 't2brot':
+#             image_rotating_concat(demo_file, image_only_file, image_file, pos='c')
+#         elif place == 'rand':
+#             image_paste_anywhere(demo_file, image_only_file, image_file, x=160, y=150)
+#         else:
+#             raise NotImplementedError()
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo_resize(scale: Union[int, float]):
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     resize_save_root = "dataset/yesorno_50_imageonly_resize"
+#     create_dir(dataset_root)
+#     create_dir(resize_save_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{dataset_root}/with_demo_COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_ysorno_demo.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#         if not os.path.exists(image_file):
+#             images_concat(demo_file, image_only_file, image_file)
+#         resize_file = f"{resize_save_root}/scale_{scale}_with_demo_COCO_test2015_000000" + str(
+#             data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_resize(image_file, scale, resize_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": resize_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo_nshots(n: int):
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     n_shots_root = "dataset/yesorno_50_imageonly_nshots"
+#     create_dir(dataset_root)
+#     create_dir(n_shots_root)
+#     datas = []
+#     demo_text = """Question: {}
+# """
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{n_shots_root}/with_demo_{n}shots_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                                  '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_yesorno_demo_{n}.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         demo_h, demo_w = get_image_size(demo_file)
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file, width=demo_w)
+#
+#         images_concat(demo_file, image_only_file, image_file)
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
+#
+#
+# def load_yesorno50_demo_place(place: str):
+#     ori_dataset_root = "dataset/yesorno_50"
+#     ori_datas = load_json(f"{ori_dataset_root}/questions.json")
+#     dataset_root = "dataset/yesorno_50_imageonly"
+#     place_root = "dataset/yesorno_50_imageonly_place"
+#     create_dir(dataset_root)
+#     create_dir(place_root)
+#     datas = []
+#     demo_text = """Question: {}"""
+#     for data in ori_datas:
+#         ori_image_file = f"{ori_dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#         image_file = f"{place_root}/with_demo_{place}_COCO_test2015_000000" + str(data.get("image_id")).rjust(6,
+#                                                                                                               '0') + ".jpg"
+#         demo_file = f"{dataset_root}/vqa_yesorno_demo_{place}.jpg"
+#         image_only_file = f"{dataset_root}/COCO_test2015_000000" + str(data.get("image_id")).rjust(6, '0') + ".jpg"
+#
+#         text_image_concat(f"Question: {data.get('question')}", ori_image_file, image_only_file)
+#         if place == 'l2r':
+#             image_paste_anywhere(demo_file, image_only_file, image_file, x=1400, y=60)
+#         elif place == 't2brot':
+#             image_rotating_concat(demo_file, image_only_file, image_file, pos='c')
+#         elif place == 'rand':
+#             image_paste_anywhere(demo_file, image_only_file, image_file, x=1260, y=520)
+#         else:
+#             raise NotImplementedError()
+#         answer_file = f"{ori_dataset_root}/answers/{data.get('question_id')}.txt"
+#         with open(answer_file, mode="r", encoding="utf-8") as f:
+#             answer = f.read()
+#             f.close()
+#         text = demo_text.format(data.get("question"))
+#         datas.append(
+#             {"id": str(data.get("question_id")), "text": text, "image_file": image_file,
+#              "label": answer}
+#         )
+#     return datas
 
 
 #
