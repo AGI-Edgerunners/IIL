@@ -37,5 +37,12 @@ python run_ticl.py --exp_name exp_on_mv --dataset mathvista --lt few_shot
 # Cite
 If you find **In-Image Learning** useful for your research and applications, please kindly cite using this BibTeX:
 ```latex
-
+@misc{wang2024single,
+      title={All in a Single Image: Large Multimodal Models are In-Image Learners}, 
+      author={Lei Wang and Wanyu Xu and Zhiqiang Hu and Yihuai Lan and Shan Dong and Hao Wang and Roy Ka-Wei Lee and Ee-Peng Lim},
+      year={2024},
+      eprint={2402.17971},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
 ```
