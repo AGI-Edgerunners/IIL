@@ -57,7 +57,7 @@ def main():
     elif args.dataset == 'hallusionbench':
         category = {'all': [None]}
     elif args.dataset == 'vqa':
-        category = {'counting100': [None], 'yesorno50': [None], 'random100': [None]}
+        category = {'counting50': [None], 'yesorno50': [None], 'random50': [None]}
     else:
         raise NotImplementedError(f"not support dataset: {args.dataset}")
     for cate, sub_cates in category.items():
