@@ -1,5 +1,5 @@
 # <img src="logo_i2l.jpg" width="30" height="40"> In-Image Learning 
-Code for the paper "[All in a Single Image: Large Multimodal Models are In-Image Learners](https://arxiv.org/abs/2402.17971)".
+Code for the paper "[All in an Aggregated Image for In-Image Learning](https://arxiv.org/abs/2402.17971)".
 
 ![IIL case](Figure1.jpg)
 
